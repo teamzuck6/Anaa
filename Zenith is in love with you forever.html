@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zenith is in love with you forever</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,500;1,9..144,700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: dark;
+  --night:#1b1033; --night2:#2a1450; --rose:#ff6b96; --gold:#ffd27a; --ivory:#fff3ea; --mist:#cdbfe6;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100%; color:var(--ivory); font-family:"DM Sans",system-ui,sans-serif; line-height:1.65;
+  background:radial-gradient(120% 80% at 50% 0%,var(--night2) 0%,var(--night) 60%) fixed var(--night);
+  overflow-x:hidden;
+}
+#stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+main{position:relative;z-index:1}
+section{max-width:720px;margin:0 auto;padding:72px 24px;text-align:center}
+.hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center}
+h1{
+  font-family:Fraunces,Georgia,serif; font-weight:500; font-style:italic;
+  font-size:clamp(2.6rem,9vw,5.2rem); line-height:1.05; margin:0 0 20px; letter-spacing:-.02em;
+  text-wrap:balance;
+}
+h1 .heart{color:var(--rose);font-style:normal;display:inline-block;animation:beat 1.6s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+.wish{font-family:Fraunces,Georgia,serif;font-size:clamp(1.3rem,4vw,1.8rem);color:var(--gold);margin:0 0 36px}
+h2{font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(1.6rem,5vw,2.3rem);margin:0 0 20px}
+p{max-width:56ch;margin:0 auto 1.2em;color:var(--mist);font-size:1.05rem}
+
+/* cake */
+.cake{width:min(260px,70vw);margin:0 auto 28px;display:block;overflow:visible}
+.flame{transform-origin:50% 100%;transform-box:fill-box;animation:flick .5s ease-in-out infinite alternate;transition:opacity .5s,transform .5s}
+.flame:nth-of-type(2){animation-delay:.15s}.flame:nth-of-type(3){animation-delay:.3s}
+@keyframes flick{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.88,1.1) rotate(3deg)}}
+.out .flame{opacity:0;transform:scale(.2);animation:none}
+.smoke{opacity:0}
+.out .smoke{animation:rise 1.8s ease-out}
+@keyframes rise{0%{opacity:.7;transform:translateY(0)}100%{opacity:0;transform:translateY(-30px)}}
+
+button{
+  font:inherit;font-weight:500;cursor:pointer;border:0;border-radius:999px;padding:14px 30px;
+  background:var(--rose);color:#2a0a1c;transition:transform .15s,background .2s;
+}
+button:hover{background:#ff86a9}
+button:active{transform:scale(.96)}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+button[disabled]{background:transparent;color:var(--gold);cursor:default;border:1px solid var(--gold)}
+
+.birthday{
+  font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:700;
+  font-size:clamp(2.4rem,10vw,4.8rem);line-height:1.1;margin:0 0 8px;color:var(--gold);
+}
+
+/* reasons */
+.reasons{list-style:none;padding:0;margin:0;text-align:left;display:grid;gap:14px}
+.reasons li{
+  padding:18px 22px;border-left:3px solid var(--rose);background:rgba(255,255,255,.05);
+  border-radius:0 14px 14px 0;color:var(--ivory);
+}
+
+.letter{
+  max-width:560px;margin:0 auto;padding:34px 30px;text-align:left;border-radius:18px;
+  background:linear-gradient(160deg,rgba(255,243,234,.97),rgba(255,226,214,.97));color:#3a1d33;
+  font-family:Fraunces,Georgia,serif;font-size:1.12rem;line-height:1.75;box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+.letter p{color:#3a1d33;margin:0 0 1em;max-width:none;font-size:inherit}
+.sign{font-style:italic;font-weight:500;text-align:right;margin:1.4em 0 0}
+footer{padding:48px 24px calc(48px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--mist);position:relative;z-index:1}
+footer b{color:var(--rose);font-weight:500}
+h1 .heart{cursor:pointer}
+#page2{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:56px 24px 24px;text-align:center}
+#page2 h2{font-size:clamp(2rem,7vw,3.2rem);font-style:italic;margin-bottom:8px}
+.gifts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin:32px 0}
+.gift{min-height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;border-radius:18px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,210,122,.35);color:var(--ivory);font-family:Fraunces,Georgia,serif;font-size:1.05rem;line-height:1.5}
+.gift:hover{background:rgba(255,255,255,.12)}
+.gift .box{font-size:3rem;line-height:1}
+.gift.open{background:linear-gradient(160deg,rgba(255,243,234,.97),rgba(255,226,214,.97));color:#3a1d33;border-color:transparent;cursor:default}
+.gift.open .box{animation:pop .5s ease-out}
+@keyframes pop{0%{transform:scale(.3) rotate(-20deg)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
+button.ghost{background:transparent;color:var(--ivory);border:1px solid var(--mist)}
+button.ghost:hover{background:rgba(255,255,255,.1)}
+.big{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(2rem,8vw,3.6rem);color:var(--gold);margin:48px 0 8px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<main>
+  <section class="hero" id="top">
+    <h1>Zenith is in love with you forever <span class="heart" aria-hidden="true">♥</span></h1>
+    <p class="wish">Happy Birthday, Anna</p>
+
+    <svg class="cake" id="cake" viewBox="0 0 200 190" role="img" aria-label="Birthday cake with three candles">
+      <!-- flames -->
+      <path class="flame" d="M60 36c-8-9-3-18 0-24 3 6 9 15 0 24z" fill="#ffd27a"/>
+      <path class="flame" d="M100 36c-8-9-3-18 0-24 3 6 9 15 0 24z" fill="#ffb347"/>
+      <path class="flame" d="M140 36c-8-9-3-18 0-24 3 6 9 15 0 24z" fill="#ffd27a"/>
+      <!-- smoke -->
+      <g class="smoke" stroke="#cdbfe6" stroke-width="2" fill="none" stroke-linecap="round">
+        <path d="M60 30q-5-6 0-12"/><path d="M100 30q-5-6 0-12"/><path d="M140 30q-5-6 0-12"/>
+      </g>
+      <!-- candles -->
+      <rect x="56" y="38" width="8" height="34" rx="2" fill="#fff3ea"/>
+      <rect x="96" y="38" width="8" height="34" rx="2" fill="#fff3ea"/>
+      <rect x="136" y="38" width="8" height="34" rx="2" fill="#fff3ea"/>
+      <!-- top tier -->
+      <rect x="35" y="72" width="130" height="42" rx="10" fill="#ff6b96"/>
+      <path d="M35 90q16 14 32 0t32 0 32 0 32 0v-8H35z" fill="#fff3ea"/>
+      <!-- bottom tier -->
+      <rect x="15" y="114" width="170" height="52" rx="12" fill="#e64d80"/>
+      <path d="M15 134q21 16 42 0t42 0 42 0 42 0v-10H15z" fill="#fff3ea"/>
+      <rect x="5" y="166" width="190" height="10" rx="5" fill="#cdbfe6"/>
+    </svg>
+
+    <button id="blow" type="button">Blow out the candles</button>
+    <p id="after" class="birthday" hidden>Happy Birthday, Anna!</p>
+    <button id="open" type="button" hidden style="margin-top:22px">Open your surprise 🎁</button>
+  </section>
+
+  <section>
+    <h2>Anna, today is all about you</h2>
+    <p>Another year of you in the world makes everything around you brighter. I hope today is filled with laughter, your favourite things, and everyone who loves you, including me, most of all.</p>
+  </section>
+
+  <section>
+    <h2>Why I love you</h2>
+    <ul class="reasons">
+      <li>You make ordinary days feel special.</li>
+      <li>Your smile can fix my worst mood in a second.</li>
+      <li>You are kind, and you make me want to be better.</li>
+      <li>With you, home isn’t a place. It’s a feeling.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>A letter for you</h2>
+    <div class="letter">
+      <p>Dear Anna,</p>
+      <p>Happy birthday to the girl who owns my heart. Thank you for every message, every laugh, and every moment that made my life feel complete.</p>
+      <p>I don’t need a special day to tell you this, but today I’ll say it louder: I love you, and I always will. Forever isn’t long enough, but I’m going to spend it with you anyway.</p>
+      <p class="sign">Forever yours,<br>Zenith ♥</p>
+    </div>
+  </section>
+</main>
+
+<div id="page2" hidden>
+  <h2>Your surprises, Anna</h2>
+  <p>Three gifts are waiting for you. Tap each one to open it.</p>
+  <div class="gifts">
+    <button class="gift" type="button" data-msg="A promise: I will always choose you, today and every day." data-icon="💍"><span class="box">🎁</span><span>Gift one</span></button>
+    <button class="gift" type="button" data-msg="A wish: may this year bring you everything that makes you smile." data-icon="🌟"><span class="box">🎁</span><span>Gift two</span></button>
+    <button class="gift" type="button" data-msg="A coupon: one free hug from me, any time, no questions asked." data-icon="🤗"><span class="box">🎁</span><span>Gift three</span></button>
+  </div>
+  <div class="row">
+    <button id="rain" type="button">Make it rain hearts ♥</button>
+    <button id="kiss" type="button" class="ghost">Send me a kiss 💋</button>
+  </div>
+  <p id="kissmsg" class="wish" hidden style="margin-top:24px">Mwah! Delivered, with all my love.</p>
+  <p class="big">I love you, Anna ♥</p>
+  <p>Forever and always, Zenith.</p>
+  <div class="row" style="margin-top:28px"><button id="back" type="button" class="ghost">← Back to the party</button></div>
+</div>
+
+<footer>Made with <b>♥</b> by Zenith, just for Anna.</footer>
+
+<script>
+// Starfield
+(function(){
+  var c=document.getElementById('stars'),x=c.getContext('2d'),stars=[];
+  function size(){c.width=innerWidth;c.height=innerHeight;stars=[];
+    for(var i=0;i<90;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.4+.3,p:Math.random()*6});}
+  function draw(t){x.clearRect(0,0,c.width,c.height);
+    stars.forEach(function(s){x.globalAlpha=.35+.35*Math.sin(t/900+s.p);x.fillStyle='#fff3ea';
+      x.beginPath();x.arc(s.x,s.y,s.r,0,6.3);x.fill();});
+    requestAnimationFrame(draw);}
+  size();addEventListener('resize',size);requestAnimationFrame(draw);
+})();
+
+// Confetti of hearts
+var cf=document.getElementById('confetti'),cx=cf.getContext('2d'),bits=[],running=false;
+function fit(){cf.width=innerWidth;cf.height=innerHeight}fit();addEventListener('resize',fit);
+function burst(){
+  var colors=['#ff6b96','#ffd27a','#fff3ea','#cdbfe6','#e64d80'];
+  for(var i=0;i<140;i++)bits.push({
+    x:innerWidth/2,y:innerHeight*.45,vx:(Math.random()-.5)*14,vy:-Math.random()*13-3,
+    s:Math.random()*14+8,r:Math.random()*6,vr:(Math.random()-.5)*.2,c:colors[i%5],h:Math.random()<.6});
+  if(!running){running=true;requestAnimationFrame(tick)}
+}
+function tick(){
+  cx.clearRect(0,0,cf.width,cf.height);
+  bits=bits.filter(function(b){return b.y<cf.height+40});
+  bits.forEach(function(b){
+    b.vy+=.28;b.x+=b.vx;b.y+=b.vy;b.vx*=.99;b.r+=b.vr;
+    cx.save();cx.translate(b.x,b.y);cx.rotate(b.r);cx.fillStyle=b.c;
+    if(b.h){cx.font=b.s+'px sans-serif';cx.textAlign='center';cx.fillText('♥',0,0)}
+    else cx.fillRect(-b.s/4,-b.s/2,b.s/2,b.s);
+    cx.restore();
+  });
+  if(bits.length)requestAnimationFrame(tick);else{running=false;cx.clearRect(0,0,cf.width,cf.height)}
+}
+
+var btn=document.getElementById('blow'),cake=document.getElementById('cake'),after=document.getElementById('after');
+btn.addEventListener('click',function(){
+  cake.classList.add('out');
+  btn.disabled=true;btn.textContent='Make a wish, Anna ✨';
+  after.hidden=false;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce){burst();setTimeout(burst,500)}
+  document.getElementById('open').hidden=false;
+});
+
+// Extra surprises
+var reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rain(){
+  if(reduceMotion)return;
+  var colors=['#ff6b96','#ffd27a','#fff3ea','#e64d80'],n=0;
+  var t=setInterval(function(){
+    for(var i=0;i<3;i++)bits.push({x:Math.random()*innerWidth,y:-20,vx:(Math.random()-.5)*2,vy:Math.random()*2+1,
+      s:Math.random()*16+10,r:Math.random()*6,vr:(Math.random()-.5)*.1,c:colors[i%4],h:true});
+    if(!running){running=true;requestAnimationFrame(tick)}
+    if(++n>45)clearInterval(t);
+  },110);
+}
+document.querySelector('h1 .heart').addEventListener('click',function(){if(!reduceMotion)burst()});
+
+// Second page (view switched by #surprise)
+var main=document.querySelector('main'),page2=document.getElementById('page2');
+function route(){
+  var on=location.hash==='#surprise';
+  main.hidden=on;page2.hidden=!on;
+  window.scrollTo(0,0);
+  if(on&&!reduceMotion)burst();
+}
+document.getElementById('open').addEventListener('click',function(){location.hash='surprise'});
+document.getElementById('back').addEventListener('click',function(){location.hash='top'});
+addEventListener('hashchange',route);route();
+
+document.querySelectorAll('.gift').forEach(function(g){
+  g.addEventListener('click',function(){
+    if(g.classList.contains('open'))return;
+    g.classList.add('open');
+    g.querySelector('.box').textContent=g.dataset.icon;
+    g.lastElementChild.textContent=g.dataset.msg;
+    if(!reduceMotion)burst();
+  });
+});
+document.getElementById('rain').addEventListener('click',rain);
+document.getElementById('kiss').addEventListener('click',function(){
+  document.getElementById('kissmsg').hidden=false;rain();
+});
+</script>
+</body>
+</html>
